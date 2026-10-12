@@ -113,7 +113,7 @@ In sections 3.ii, 3.iii, and 3.iv, models and configurations needed for your RPi
 ### 3.i Local network preparation
 
 > [!TIP]
-> **Brief description**: Configure the local network of your cluster (the one managed by the local router, i.e., Linksys in the above figure). We need to set subnetwork mask and DHCP address range on the local router, and also reserve a pool of static IP addresses on the local router (not managed by the local DHCP) for the needs of OpenStack. Those static addresses will later be passed to OpenStack for governance (e.g., for assigninng them to virtual machines as so-called floating IP addresses). We will need not more than 16 such static addresses (somewhat arbitrary number though sufficient for our purposes).
+> **Brief description:** Configure the local network of your cluster (the one managed by the local router, i.e., Linksys in the above figure). We need to set subnetwork mask and DHCP address range on the local router, and also reserve a pool of static IP addresses on the local router (not managed by the local DHCP) for the needs of OpenStack. Those static addresses will later be passed to OpenStack for governance (e.g., for assigninng them to virtual machines as so-called floating IP addresses). We will need not more than 16 such static addresses (somewhat arbitrary number though sufficient for our purposes).
 
 It is best to start by configuring the appropriate IP subnet parameters (subnetwork mask, DHCP address range) on your local router (Linksys router in the figure from section 2). Throughout this guide, we assume the mask is 192.168.10.0/24.
 
@@ -137,6 +137,9 @@ Make sure your TP-Link switch is set to the factory settings. This can be perfor
 Now you can proceed to subsection 3.ii.
 
 ### 3.ii RPi system configuration
+
+> [!TIP]
+> **Brief description:** Install the OS (flash the Raspberry Pi OS Lite 64bit) setting unique, regular names to the hosts, common user name and password, and enable password authentication for ssh access. Upgrade the OS, disable unattended upgrades, enable password authentication for Ansible (edit sudoers), and install the qemu-system-arm packages needed by KVM. Enable packet forwarding. Other useful tools of your choice can be installed (e.g., the 'sensors' package for temperature measurement on the Raspberries). One can do those configurations on her/his own but we suggest to follow the steps detailed below.
 
 Generally, when choosing the installation environment, we follow the guidelines contained in the [Kolla-Ansible support matrix](#https://docs.openstack.org/kolla-ansible/2025.1/user/support-matrix.html) .
 
