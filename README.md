@@ -112,7 +112,7 @@ In sections 3.ii, 3.iii, and 3.iv, models and configurations needed for your RPi
 
 ### 3.i Local network preparation
 
-_**Hard way installation description:** Here, we configure the local network of your cluster (the one managed by the local router, i.e., Linksys in the above figure). We need to set subnetwork mask and DHCP address range on the local router and also reserve a pool of static IP addresses (not managed by the local DHCP) on the local router for the needs on OpenStack. Those addresses will later be passed to OpenStack for governance. We suggest to reserve 16 such static addresses (somewhat arbitrary number though sufficient for our purposes)._
+_**Hard way installation description:** Here, we configure the local network of your cluster (the one managed by the local router, i.e., Linksys in the above figure). We need to set subnetwork mask and DHCP address range on the local router and also reserve a pool of static IP addresses (not managed by the local DHCP) on the local router for the needs of OpenStack. Those addresses will later be passed to OpenStack for governance (e.g., for assigninng them to virtual machines as so-called floating IP addresses). We suggest to reserve 16 such static addresses (somewhat arbitrary number though sufficient for our purposes)._
 
 It is best to start by configuring the appropriate IP subnet parameters (subnetwork mask, DHCP address range) on your local router (Linksys router in the figure from section 2). Throughout this guide, we assume the mask is 192.168.10.0/24.
 
