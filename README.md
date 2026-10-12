@@ -265,7 +265,7 @@ As some people may be interested only in basic networking, while the others in m
 
   * **If you are determined to use VLAN provider networks in your cluster**, follow this subsection to the end, and then proceed to subsection [3.v VLAN provider networks - part 1 (initial configuration for a flat network)](#3v-vlan-provider-networks---part-1-initial-configuration-for-a-flat-network) (and then to sections 4, 5, 6, and 7). Note that in the VLAN provider network track we use a two-step approach: in subsection 3.v we only set a flat provider network in the cluster (step 1), while VLAN provider networks will be deployed as late as in section [7. VLAN provider networks - part 2 (enabling and using VLAN provider networks)](#7-vlan-provider-networks---part-2-enabling-and-using-vlan-provider-networks) (step 2).
 
-#### Server network model
+#### Server internal network model
 
 Network devices on our RPi must meet Kolla-Ansible requirements for network interfaces. In particular, Kolla-Ansible requires that there are at least two network interfaces available on each OpenStack host (Kolla-Ansible user will then assign OpenStack roles to those interfaces). As Raspbbery Pi comes with only one network card we have to use virtual interfaces to fulfill the above requirement.
 
