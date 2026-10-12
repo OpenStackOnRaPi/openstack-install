@@ -15,7 +15,7 @@ In summary, both the Raspberry Pi 4 and 5 are suitable for setting up small and 
 >
 > Update, June 2026: OpenStack 2026.1 has been released, but we have not tested it so far.
 >
-> Update, October 2026: OpenStack 2026.2 has been released. We are planning to test it on our platform - stay tuned.
+> Update, October 2026: OpenStack 2026.2 has been released. We are planning to try it out on our platform - stay tuned.
 
 ## Table of contents
 
