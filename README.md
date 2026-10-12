@@ -275,8 +275,8 @@ To do this, we will create veth pairs and a linux bridge, and connect them to em
 SCHEMATIC VIEW OF RPi INTERNAL NETWORK TO EMULATE REAL DC NETWORK ENVIRONMENT
 
 network_interface, veth0          neutron_external_interface, veth1
-(OStack services, tenant nets)    (provider networks, tenant routers/floating IPs)
-static IP 192.168.10.2x/24         no IP address assigned (Kolla-Ansible expects that)
+(OStack services, tenant nets)    (provider networks, tenant routers, floating IPs for external traffic)
+static IP addr 192.168.10.xy/24   no IP address assigned (Kolla-Ansible expects this)
  
                                                     OPENSTACK HOST NETWORK DOMAIN ("host-internal" in production setups)
                                                     - under Nova/Neutron governance
