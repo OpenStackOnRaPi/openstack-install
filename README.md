@@ -71,9 +71,9 @@ All procedures described in this guide assume compliance with the setup options 
      * mimimal possible: [1x4GB RAM + 1x8GB RAM] (a minimal cluster, enough to create a single CirrOS virtual machine and nothing more)
      * OpenStack control/network nodes run on the same 8GB RPi host
      * ideally, you would have one RPi 5 with 16GB of RAM in the cluster to run the OpenStack control and network node (this eliminates swap memory size issues, see step 9 in section [RPi system configuration](#3i-rpi-system-configuration))
-   * all Pi are equipped with 32GB SD disk
-   * Note: a single 8GB RAM RPi host in all-in-one setup of Kolla-Ansible OpenStack is barely able to host OpenStack in absolutely minimal configuration. In such a cluster, one can create a single CirrOS instance with 512MB memory, but the cloud becomes unstable. We have seen many times that even such a simple configuration ends in failure soon after instantiating the VM. And OpenStack all-in-one system immediately crashes due to lack of memory when a second similar CirrOS instance is created, unless you increase the swap memory size. This last option (increased swap memory), however, carries the risk that everything will become  v e r y  slow. That is the reason why we consider the dual-host configuration to be the minimum possible.
-   * An illustrative diagram of the physical setup of the cluster with Linksys WRT54-GL as the local router is shown below. Notice that the Linksys router connects to the TP-Link switch on the WAN port of the switch (Port 5 in the TP-Link management dashboard).
+   * all Raspberries are equipped with 32GB SD disk
+   * Note: a single 8GB RAM RPi board in all-in-one (AIO) setup of Kolla-Ansible OpenStack is barely able to host OpenStack in the absolute smallest configuration. In such a case, one can create a single CirrOS instance with 512MB memory, but the installation becomes unstable. We have seen many times that even such a simple configuration ends in failure soon after instantiating the VM. And OpenStack AIO system immediately crashes because of OOM when a second similar CirrOS instance is created, unless you increase the swap memory size. Increasing swap memory in AIO case, however, carries the risk that everything will become  v e r y  slow. That is the reason why we consider the dual-host configuration to be the minimum possible.
+   * An illustrative diagram of the physical setup of the cluster with Linksys WRT54-GL as the local router is shown below. Notice that the Linksys router connects to the switch on the WAN port of the switch (Port 5 in the TP-Link management dashboard).
 
 <p align="center">
 <img src=images/cluster.jpg width='65%' />
@@ -81,11 +81,11 @@ All procedures described in this guide assume compliance with the setup options 
    
 2. Software
    * Operating systems
-     - Raspberry Pi OS Lite 64bit on Raspberry Pi boards (a port of Debian 12 Bookworm with no desktop environment).
-       - Note: as an artifact of certain problems from the past, we currently use Raspberry Pi OS (port of Debian). However, one can find Ubuntu more appropriate, with additional bonus that it comes with systemd-networkd enabled by default and Netplan installed (so one will not have to disable NetworkManager, install Netplan and enable systemd-metworkd which is required for Raspberry Pi OS).
      - Ubuntu 2024.04 on the management node
+     - Raspberry Pi OS Lite 64bit on Raspberry Pi boards (a port of Debian 12 Bookworm with no desktop environment).
+       - Note: as an artifact of certain problems from the past, we currently use Raspberry Pi OS (port of Debian). However, one can find Ubuntu more appropriate, with additional bonus that it comes with systemd-networkd enabled by default and Netplan installed (so one will not have to disable NetworkManager, install Netplan and enable systemd-networkd which is required for Raspberry Pi OS).
    * Kolla-Ansible 2025.1. 
-     - Note: as of October 2026, container images for releases 2025.2, 2026.1 and 2026.2 are available for aarch64 architecture, and for Debian 13 and Ubuntu 2024.04 (see [here](#https://quay.io/repository/openstack.kolla/neutron-openvswitch-agent?tab=tags). You can try them out, but first check the [support matrix](https://docs.openstack.org/kolla-ansible/2026.2/user/support-matrix.html) and align the operating system versions on the Raspberry Pi and the management node (where Kolla-Ansible will be installed) accordingly.
+     - Note: as of October 2026, container images for aarch64 architecture are available for releases 2025.2, 2026.1, 2026.2, and Debian 13 and Ubuntu 2024.04 (see [here](#https://quay.io/repository/openstack.kolla/neutron-openvswitch-agent?tab=tags). You can try them out, but first check the [support matrix](https://docs.openstack.org/kolla-ansible/2026.2/user/support-matrix.html) to ensure that the operating system versions on the management node (where Kolla-Ansible will be installed) and on the Raspberry Pi devices are compatible with each other.
    * Linux network configuration tools: Netplan and systemd-networkd (they are not available by default in Debian and have to be enabled; we use them for all OS variants to maintain compliance with long-standing policies in our laboratories).
 4. Physical network:
    * the RPis are equipped with 802.3af/at PoE HAT from Waveshare (PoE is optional but simplifies cluster wiring) 
