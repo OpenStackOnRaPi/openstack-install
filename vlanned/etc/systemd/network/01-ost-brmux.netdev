@@ -3,8 +3,8 @@
 # - having brmux defined here, we must not define it again in the netplan file (indeed,
 # defining it in the netplan file would result in incorrect network configuration - see the
 # description in file /etc/netplan/50-cloud-init.yaml)
-# - this definition creates the brmux device, but it remains inactive (Down) after creation; we
-# bring it Up by specifying it in our files *.network.
+# - this definition creates brmux device, but it remains inactive (DOWN) after creation; we
+# bring it UP by specifying it in our files *.network.
 
 #######################
 # declare bridge device
