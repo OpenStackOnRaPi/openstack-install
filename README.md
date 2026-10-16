@@ -1029,7 +1029,7 @@ On each RPi, replace four files in the `/etc/systemd/network` directory with the
 > [!Warning]
 > Remember that it is necessary to only replace the files fromn the `vlanned/etc/systemd/network` directory **keeping untouched remaining files** already present on the RPis in directory `/etc/systemd/network`. Otherwise you will cut off remote access to your RPis unless you enable WiFi access to the boards before. As a last resort, to avoid a complete reinstallation, you will need to connect your devices to a monitor and keyboard or use serial port (GPIO on each board or also dedicated UART port on RPi5) and Putty (or similar tool) to connect to the RPis.
 
-You are encouraged to review these files to study how persistent configuration of VLANs can be achieved in Linux. The files contain explanation of each construct used. After uploading them, you can restart the RPi with the `reboot` command. Alternatively, if you can reach your RPis using Linksys WiFi access point or serial port (GPIO), you can restart only the networking system (without rebooting) with the following commands:
+You are encouraged to review these files to study how persistent configuration of VLANs can be achieved in Linux. The files contain explanation of each construct used. After uploading them, it is needed to deploy the new configuration. To do this, you can restart the RPi with the `reboot` command (simplest but may impact OpenStack containers). Alternatively, if you can reach your RPis using Linksys WiFi access point or serial port (GPIO), you can restart only the networking system (without rebooting) with the following commands:
 
 ```
 # on each RPi
@@ -1039,9 +1039,8 @@ $ systemctl restart systemd-networkd
 ```
 
 > [!Note]
-> 1) Maybe network reconfiguration can be done without rebooting and without using WiFi using the command `sudo networkctl reload` or  simpler `sudo netplan apply` ypu can try it before rebooting.
-> 2) To access RPi board using WiFi you have to activate WiFi access point on the Linksys router, enable WiFi on the board in your netplan file `50-cloud-init.yaml`, and run `netplan generate` - refer to point 3 in [this part](README.md#configuring-the-network-flat) of the guide for details.
-
+> 1) Maybe network reconfiguration can be done in a simpler way, i.e., without rebooting and without using WiFi. One can try the command `sudo networkctl reload` or `sudo netplan apply` in the first place.
+> 2) To access RPi board using WiFi you have to activate WiFi access point on the Linksys router, enable WiFi on the board in your netplan file `50-cloud-init.yaml`, then run `sudo netplan generate` to check and then `sudo netplan apply` to actually deploy - refer to point 3 in [this part](README.md#configuring-the-network-flat) of the guide for details.
 
 After completing the above steps, VLANs 101, 102 and 103 will also be activated in the virtual devices on our RPi hosts. So, they will span the physical infrastructure and the virtual devices and-to-and. This will make them finally ready for building OpenStack VLAN provider networks on top of them.
 
