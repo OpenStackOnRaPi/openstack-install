@@ -142,7 +142,7 @@ Now you can proceed to subsection 3.ii.
 > * **Brief description:** Install the OS (flash the Raspberry Pi OS Lite 64bit) setting unique, regular names to the hosts, common user name and password, and enable password authentication for ssh access. Regarding the OS-es, we follow the guidelines contained in the [Kolla-Ansible support matrix](#https://docs.openstack.org/kolla-ansible/2025.1/user/support-matrix.html) to align the OS-es on the Raspberries and on the management host. Upgrade the OS, disable unattended upgrades, enable password authentication for Ansible (edit sudoers), and install `qemu-system-arm` packages needed by KVM. Enable packet forwarding. Increase swap memory size to 4GB on the 8GB board you plan to host OpenStack `control` node; configure the Raspberries to use `Netplan` and `systemd-networkd` (if needed, disable `NetworkManager`, enable `systemd-networkd`, install `Netplan`). Other useful tools of your choice can be installed (e.g., the `sensors` package to monitor CPU temperature on the Raspberries). You can perform the above configuration yourself; however, we recommend proceeding carefully and following the steps described below.
 
 >   [!IMPORTANT]
-> Below, **differences in configuration between Debian and Ubuntu** will be clearly highlighted in the relevant parts of the description by specifying which system they apply to. In all other cases, the information provided applies to both systems.
+> Below, **differences in configuration between DebianRaspberry Pi OS and Ubuntu** will be clearly highlighted in the relevant parts of the description by specifying which system they apply to. In all other cases, the information provided applies to both systems.
 
 1. Flash the Raspberry Pi OS Lite 64bit (a port of Debian 12 Bookworm with no desktop environment) onto microSD card. We use Raspberry Pi Imager for that, but other tools can be used as well.
    * make sure password authentication for ssh access is enabled (the instructions given in the following fit this authentication method); this allows one to avoid the use of authentication keys in Ansible (not recommended for production, but simpler)
@@ -157,7 +157,7 @@ Now you can proceed to subsection 3.ii.
 
 **Execute steps 3-10 for each RPi**
 
-3. **[Debian only]** Add your user to the `sudo` group (adapt user name according to your setup):
+3. **[Raspberry Pi OS only]** Add your user to the `sudo` group (adapt user name according to your setup):
 
    ```$ sudo usermod -aG sudo ubuntu```
 
@@ -173,7 +173,7 @@ $ sudo visudo    ==> change user group "sudo" permissions to:
 # Allow members of group sudo to execute any command
 %sudo ALL=(ALL:ALL) NOPASSWD: ALL
   ```
-**[Debian only]** (available out of the box on Ubuntu)
+**[Raspberry Pi OS only]** (available out of the box on Ubuntu)
 ```
 $ sudo apt-get install ufw -y
 ```
@@ -226,9 +226,9 @@ Except the _Note_ given above, this section only applies when you are going to u
 > [!IMPORTANT]
 > Basically, this configuration applies only to the host that will play the role of "control node" in your OpenStack cluster. We recommend to separate the control and network node roles form each other and dedicate one RPi host exclusively for the control node role. Remaining hosts can be left with default swap memory size settings (512MB in the Raspberry Pi OS), but allocating more space also in these nodes will not be a mistake. In this guide, we assume the control node role to be be assigned to host with the name `ost04` and network node to be assigned to host `ost3`. This is shown in [section 5.iii](#5iii-configuring-kolla-ansible-files-for-specific-openstack-depolyment) where you can check how we assign OpenStack roles to hosts in Kolla-Ansible inventory file `multinode`. 
 
-Follow the instructions below
+Follow the instructions below.
 
-   * For **[Debian/Raspberry Pi OS]**
+   * For **[Raspberry Pi OS]**
 
    The procedure below has been drawn from [this guide](https://itsfoss.com/pi-swap-increase/). The highest usage of swap memory for OpenStack control node that we have observed so far is 2.5GB. Below we set the size to **`4096`** which should provide a safe margin.
   ```
