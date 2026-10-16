@@ -275,10 +275,10 @@ The performance of the swap can be further tuned by modifying the kernel paramet
   
 10. Activate preferred network configuration backend
 
-We disable NetworkManager and activate systemd-networkd daemon to manage network configurations. If one prefers to use NetworkManager it will be necessary to convert all specifications of virtual network devices provided in this repository into NetworkManager structures on her/his own.
+> [!IMPORTANT]
+> This step 10 is only **needed for Raspberry Pi OS** and can be **skipped for Ubuntu**.
 
-> [!Note]
-> Steps 1 and 2 below are needed only in case of Debian and can be skipped for Ubuntu (in our case, if one is lucky to have access to Kolla-Ansible container images for Ubuntu).
+We disable NetworkManager and activate systemd-networkd daemon to manage network configurations. If one prefers to use NetworkManager it will be necessary to convert all specifications of virtual network devices provided in this repository into NetworkManager structures on her/his own.
 
    * Stop NetworkManager, and start systemd-networkd
 
@@ -401,16 +401,18 @@ network:
 
 #-----------------------------------------#
 # WiFi configurations (optional)          #
-# (uncomment if needed)                   #
+# uncomment the `wifis` section if needed #
 #-----------------------------------------#
-# WiFi can be hepful during configurations when we will teporarily loose connectivity to
-# RPis from the fixed (cable) network used by OpenStack. RPis (but not OpenStack) will
-# then be accessible via WiFi.
+# WiFi can potentially be hepful during configurations when we will teporarily loose connectivity to
+# RPis from the fixed (cable) network used by OpenStack. RPis (but not OpenStack) will  then be
+# accessible via WiFi. Our observation, however, is that teams typically do not face problems
+# severe enough to be forced to using this option. We recommend leaving this part commented out.
+#
 # WiFi should be configured as isolated subnetwork - distinct form the fixed (cable)
 # network used to access OpenStack (i.e., OpenStack provider external network).
 # E.g., on Linksys, you should dedicate a separate bridge (e.g., br1) to WiFi with
 # distinct IP address range for this subnetwork. It will then be sufficient to attach
-# from your namagement host to Linsys WiFi access point. Alternatively, if you prefer to
+# from your management host to Linsys WiFi access point. Alternatively, if you prefer to
 # continue using the cable connection to Linksys, you will also have to enable routing on
 # Linksys between this subnetwork and the fixed subnetwork used to access OpenStack.
 
@@ -443,12 +445,12 @@ network:
         - 192.168.1.6x/24   # ADJUST THIS ADDRESS FOR EACH YOUR RPI !!!!!!!!
       nameservers:
         addresses:
-          - 192.168.1.1     # ADJUST to match your Linksys dhcp server
+          - 192.168.10.1     # ADJUST to match your Linksys dhcp server
           - 8.8.8.8
           - 8.8.2.2
       routes:
         - to: 0.0.0.0/0
-          via: 192.168.1.1  # ADJUST to match your Linksys router
+          via: 192.168.10.1  # ADJUST to match your Linksys router
 #    veth0br:
 #      dhcp4: false
 #      dhcp6: false
@@ -668,7 +670,7 @@ forks=4
 EOT
 ```
 
-  * Once we have prepared networking on our RPis we should update the file ```/etc/hosts``` (on the management host) by adding our OpenStack hosts (RPis); this information will be used by Ansible. For example:
+  * Once we have prepared networking on our RPis we should update the file ```/etc/hosts``` (on the management host) by adding our OpenStack hosts (RPis); this information will be used by Ansible. For example (adjust the IPs to your environment):
 ```
 $ cat /etc/hosts
 127.0.0.1	localhost
@@ -702,7 +704,7 @@ $ sudo nano /etc/kolla/passwords.yml
 2. Prepare inventory file `multinode` and feature configuration file `globals.yml`
 
 > [!IMPORTANT]
-> Kolla-Ansible expects the user to assign OpenStack roles (```control```, ```network```, ```compute```, etc.) to hosts by specifying role assignments in the inventory file. Our experiments revealed that the roles ```compute``` and ```network``` SHOULD be separated (i.e., allocated to different hosts) in clusters with 8GB RAM Raspberries. Without this the cluster becomes prone to out of memory (OOM) issues which lead to severe instabilities of the cloud. In an all-in-one installation (one RPi in a cluster), the node goes out of memory right after the first CirrOS VM is created and OpenStack tends to hang. If there is more than one virtual machine instance, the cluster fails immediately. In such situations, even if one can login to the hosts after rebooting and even if some Kolla-Ansible containers remain in a healthy state, OpenStack as a whole is not functional anymore. In a multinode cluster, when the control and network functions run on the same host and the compute function runs elswhere, the control/network host reaches a stete close to the OOM regime after creating the second CirrOS VM. So, in the case of Raspberry Pi clusters, even with a multinode configuration the merging of ```compute``` and ```network``` functions in a single host should be avoided. These conclusions are reflected below in a sample fragment of the inventory file where ```copmute``` and ```network``` roles are assigned to different hosts (```ost4``` and ```ost3```, respectively).
+> Kolla-Ansible expects the user to assign OpenStack roles (`control`, `network`, `compute`, etc.) to hosts by specifying role assignments in the inventory file. Our experiments revealed that the roles `compute` and `network` SHOULD be separated from the `control` role (i.e., allocated to different hosts) in clusters with 8GB RAM Raspberries. Without this the cluster becomes highly prone to out of memory (OOM) issues which lead to severe instabilities of the cloud. In an all-in-one installation (one RPi in a cluster), the node goes out of memory right after the first CirrOS VM is created and OpenStack tends to hang. If there is more than one virtual machine instance, the cluster fails immediately. In such situations, even if one can login to the hosts after rebooting and even if some Kolla-Ansible containers remain in a healthy state, OpenStack as a whole is not functional anymore. In a multinode cluster, when the `control` and `network` roles run on the same host and the `compute` role runs elswhere, the `control/network` host reaches a state close to the OOM regime after creating the second CirrOS VM (tenant network constructs seem to occupy non-negigible amount of memory). Therefore, deploying exclusively the `compute` and `network` roles on a single host is also not recommended. These conclusions are reflected below in a sample fragment of the inventory file where `compute` and `network` roles are assigned to different hosts (`ost4` and `ost3`, respectively). Note, however, that the `network` and `compute` roles can be combined on a sigle host.
 
   * file `multinode` is stored in your working directory
 
