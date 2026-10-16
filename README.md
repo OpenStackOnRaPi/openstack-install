@@ -169,11 +169,14 @@ Now you can proceed to subsection 3.ii.
 
   ```
 $ sudo apt-get install sshpass -y
-$ sudo apt-get install ufw -y  # <=== **[Debian only]**, default for Ubuntu
 $ sudo visudo    ==> change user group "sudo" permissions to:
 # Allow members of group sudo to execute any command
 %sudo ALL=(ALL:ALL) NOPASSWD: ALL
   ```
+**[Debian only]** (available out of the box on Ubuntu)
+```
+$ sudo apt-get install ufw -y
+```
 
 6. Install usefull tools
 
@@ -191,7 +194,7 @@ $ sensors
 while :; do sensors; sleep 30; done
 ```
 
-7. Enable packet forwarding on the RPi
+7. Enable packet forwarding on the RPi (critical!!!)
 
   ```
 $ sudo nano /etc/sysctl.conf
@@ -223,7 +226,10 @@ Except the _Note_ given above, this section only applies when you are going to u
 > [!IMPORTANT]
 > Basically, this configuration applies only to the host that will play the role of "control node" in your OpenStack cluster. We recommend to separate the control and network node roles form each other and dedicate one RPi host exclusively for the control node role. Remaining hosts can be left with default swap memory size settings (512MB in the Raspberry Pi OS), but allocating more space also in these nodes will not be a mistake. In this guide, we assume the control node role to be be assigned to host with the name `ost04` and network node to be assigned to host `ost3`. This is shown in [section 5.iii](#5iii-configuring-kolla-ansible-files-for-specific-openstack-depolyment) where you can check how we assign OpenStack roles to hosts in Kolla-Ansible inventory file `multinode`. 
 
-  * follow the instructions below; they are drawn from [this guide](https://itsfoss.com/pi-swap-increase/). The highest usage of swap memory that we have observed so far is 2.5GB. Below we set the size to **`4096`** which should provide a safe margin.
+  * Follow the instructions below
+
+For **[Debian/Raspberry Pi OS]**
+  * The procedure below has been drawn from [this guide](https://itsfoss.com/pi-swap-increase/). The highest usage of swap memory for OpenStack control node that we have observed so far is 2.5GB. Below we set the size to **`4096`** which should provide a safe margin.
   ```
 sudo dphys-swapfile swapoff
 sudo nano /etc/dphys-swapfile
@@ -234,6 +240,37 @@ sudo dphys-swapfile swapon
 swapon --show        # ensure it is now active
 sudo reboot          # just for any case
   ```
+For **[Ubuntu]**
+  * The procedure below has been drawn from [this guide](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
+  ```
+# check to make sure what's on (no swap sholud be present in your RPis)
+sudo swapon --show
+free -h
+df -h
+# create the swap, enable and make it persistent
+
+sudo fallocate -l 2G /swapfile
+ls -lh /swapfile
+
+sudo chmod 600 /swapfile
+ls -lh /swapfile
+
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo swapon --show
+free -h
+
+sudo cp /etc/fstab /etc/fstab.bak
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+# a malformed /etc/fstab entry can prevent the system from booting. Always back up the file first and validate with sudo findmnt --verify before rebooting. Recover the backup version before you start resolving any problems.
+sudo findmnt --verify --verbose
+
+# reload settings without rebooting
+sudo sysctl --system
+  ```
+
+The performance of the swap can be further tuned by modifying the kernel parameters `vm.swappiness` and `vm.vfs_cache_pressure`. However, our observations indicate that the default settings perform well; therefore, we recommend leaving them unchanged.
+  
 10. Activate preferred network configuration backend
 
 We disable NetworkManager and activate systemd-networkd daemon to manage network configurations. If one prefers to use NetworkManager it will be necessary to convert all specifications of virtual network devices provided in this repository into NetworkManager structures on her/his own.
