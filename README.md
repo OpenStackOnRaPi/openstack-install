@@ -755,7 +755,7 @@ $ ansible -i multinode all -m ping
 >
 > The value of **```kolla_internal_vip_address```** should be adjusted according to your environment. It must be an unused address in your network, and among others it will serve for accessing Horizon (OpenStack dashboard) to manage the OpenStack by the admin and to manage user stacks by the users (tenants).
 >
-> Enabling **```enable_neutron_provider_networks```** is not required in our case as we will use only flat provider network (we do not configure VLANs in our example setup). But you can have this feature enabled should you decide to introduce VLAN provider networks in the future.
+> Enabling **`enable_neutron_provider_networks`** is not required if you decide to use only a flat provider network (VLAN tagged provider network will not be used). But you should enable this feature by setting it to `yes` if you want to configure VLAN provider networks in the future.
 >
 > **```kolla_internal_vip_address```** MUST be anassigned (unused - free) IP address in your network (so, in particular, it will be different from the address assigned to veth0).
 
