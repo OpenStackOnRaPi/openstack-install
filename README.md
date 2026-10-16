@@ -229,7 +229,8 @@ Except the _Note_ given above, this section only applies when you are going to u
   * Follow the instructions below
 
 For **[Debian/Raspberry Pi OS]**
-  * The procedure below has been drawn from [this guide](https://itsfoss.com/pi-swap-increase/). The highest usage of swap memory for OpenStack control node that we have observed so far is 2.5GB. Below we set the size to **`4096`** which should provide a safe margin.
+
+  The procedure below has been drawn from [this guide](https://itsfoss.com/pi-swap-increase/). The highest usage of swap memory for OpenStack control node that we have observed so far is 2.5GB. Below we set the size to **`4096`** which should provide a safe margin.
   ```
 sudo dphys-swapfile swapoff
 sudo nano /etc/dphys-swapfile
@@ -241,7 +242,8 @@ swapon --show        # ensure it is now active
 sudo reboot          # just for any case
   ```
 For **[Ubuntu]**
-  * The procedure below has been drawn from [this guide](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
+
+  The procedure below has been drawn from [this guide](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
   ```
 # check to make sure what's on (no swap sholud be present in your RPis)
 sudo swapon --show
