@@ -1010,7 +1010,7 @@ $ kolla-ansible destroy -i multinode --yes-i-really-really-mean-it
 
 In this section, we describe how to enable VLAN provider networks by modifying the setup from section [3.iv VLAN provider networks - part 1](#3iv-vlan-provider-networks---part-1-rpi-network-configuration-for-a-flat-network). Then we show how such networks can be used.
 
-Note that we'll be reconfiguring a running OpenStack instance. However, all of the configurations below can be performed just as easily in section [3.iv VLAN provider networks - part 1](#3iv-vlan-provider-networks---part-1-rpi-network-configuration-for-a-flat-network) so before running the Kolla-Ansible commands (before installing OpenStack).
+Note that we'll be reconfiguring a running OpenStack instance. However, all of the configurations below can be performed just as easily as in section [3.iv VLAN provider networks - part 1](#3iv-vlan-provider-networks---part-1-rpi-network-configuration-for-a-flat-network).
 
 ### 7.i Setting VLANs for provider networks
 
@@ -1024,14 +1024,15 @@ In the `VLAN -> 802.1Q VLAN Configuration` tab, enable VLAN support using the `E
 
 #### 7.i.b Setting VLANs on the RPi hosts
 
-On each RPi, replace four files in the `/etc/systemd/network` directory with their new version defining the VLAN configuration. Those new versions are available in this repository in directory `vlanned/etc/systemd/network`- copy them to your RPis.
+On each RPi, replace four files in the `/etc/systemd/network` directory with their new version defining the VLAN configuration. Those new versions are stored in this repository in directory `vlanned/etc/systemd/network`- copy them to your RPis.
 
 > [!Warning]
-> Remember that it is necessary to only replace the files fromn the `vlanned/etc/systemd/network` directory **keeping untouched remaining files** already present on the RPis in directory `/etc/systemd/network`. Otherwise you will cut off remote access to your RPis unless you enable WiFi access to the boards before. As a last resort, to avoid a complete reinstallation, you will need to connect your devices to a monitor, keyboard, and mouse.
+> Remember that it is necessary to only replace the files fromn the `vlanned/etc/systemd/network` directory **keeping untouched remaining files** already present on the RPis in directory `/etc/systemd/network`. Otherwise you will cut off remote access to your RPis unless you enable WiFi access to the boards before. As a last resort, to avoid a complete reinstallation, you will need to connect your devices to a monitor and keyboard or use serial port (GPIO on each board or also dedicated UART port on RPi5) and Putty (or similar tool) to connect to the RPis.
 
-You are encouraged to review these files to learn how persistent configuration of VLANs can be achieved in Linux. The files contain explanation of each construct used. After uploading them, you can restart the RPi with the `reboot` command. Alternatively, if you can reach your RPis using Linksys WiFi access point or serial port (GPIO), you can restart only the networking system with the following commands:
+You are encouraged to review these files to study how persistent configuration of VLANs can be achieved in Linux. The files contain explanation of each construct used. After uploading them, you can restart the RPi with the `reboot` command. Alternatively, if you can reach your RPis using Linksys WiFi access point or serial port (GPIO), you can restart only the networking system with the following commands:
 
 ```
+# on each RPi
 $ ip link set down brmux
 $ ip link del dev brmux
 $ systemctl restart systemd-networkd
@@ -1040,7 +1041,7 @@ $ systemctl restart systemd-networkd
 > [!Note]
 > To access RPi board using WiFi you have to activate WiFi access point on the Linksys router, enable WiFi on the board in your netplan file `50-cloud-init.yaml`, and run `netplan generate` - refer to point 3 in [this part](README.md#configuring-the-network-flat) of the guide for details.
 
-After completing the above steps, VLANs 101, 102 and 103 will also be activated in the virtual devices on our RPi hosts. This will make these networks finally ready for building OpenStack VLAN provider networks on top of them.
+After completing the above steps, VLANs 101, 102 and 103 will also be activated in the virtual devices on our RPi hosts. So, they will span the physical infrastructure and the virtual devices and-to-and. This will make them finally ready for building OpenStack VLAN provider networks on top of them.
 
 #### 7.i.c Separating the flat network using a VLAN
 
@@ -1076,7 +1077,7 @@ This part is based on [this OpenStack documentation](https://docs.openstack.org/
 
 Before you run this experiment, first create a new regular project (e.g. `my-project`) and a new regular user if such regular project/user are not already present in your OpenStack (the project/user `admin` is not a good match for what we are going to do). Then assign this new project to the new user. This is an easy task to be exectuted as the `admin` user, and we do not describe it here. You can try this from the OpenStack dashboard where the procedure is quite intuitive. Or check the offcial OpenStack guides for details.
 
-Once regular projec/user are ready connect as `admin` to OpenStack using OpenStack command line tool (source appropriate rc file).
+Once regular project and user are ready, connect as `admin` to OpenStack using OpenStack command line tool (source appropriate rc file first).
 
 With a slight modification of how a provider network is created in file `init-runonce.2025.1.cirros`, we can create a provider network dedicated to a tenant. First, create a VLAN based provider network and a subnetwork. Note that this time the created provider network is not `shared`. In the example below, we use VLAN 101 for that.
 
