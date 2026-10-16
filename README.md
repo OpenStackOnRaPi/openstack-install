@@ -139,7 +139,10 @@ Now you can proceed to subsection 3.ii.
 ### 3.ii RPi system configuration
 
 > [!TIP]
-> **Brief description:** Install the OS (flash the Raspberry Pi OS Lite 64bit) setting unique, regular names to the hosts, common user name and password, and enable password authentication for ssh access. Regarding the OS-es, we follow the guidelines contained in the [Kolla-Ansible support matrix](#https://docs.openstack.org/kolla-ansible/2025.1/user/support-matrix.html) to align the OS-es on the Raspberries and on the management host. Upgrade the OS, disable unattended upgrades, enable password authentication for Ansible (edit sudoers), and install `qemu-system-arm` packages needed by KVM. Enable packet forwarding. Increase swap memory size to 4GB on the 8GB board you plan to host OpenStack `control` node; configure the Raspberries to use `Netplan` and `systemd-networkd` (disable `NetworkManager`, enable `systemd-networkd`, install `Netplan`). Other useful tools of your choice can be installed (e.g., the `sensors` package to monitor CPU temperature on the Raspberries). You can perform the above configuration yourself; however, we recommend proceeding carefully and following the steps described below.
+> * **Brief description:** Install the OS (flash the Raspberry Pi OS Lite 64bit) setting unique, regular names to the hosts, common user name and password, and enable password authentication for ssh access. Regarding the OS-es, we follow the guidelines contained in the [Kolla-Ansible support matrix](#https://docs.openstack.org/kolla-ansible/2025.1/user/support-matrix.html) to align the OS-es on the Raspberries and on the management host. Upgrade the OS, disable unattended upgrades, enable password authentication for Ansible (edit sudoers), and install `qemu-system-arm` packages needed by KVM. Enable packet forwarding. Increase swap memory size to 4GB on the 8GB board you plan to host OpenStack `control` node; configure the Raspberries to use `Netplan` and `systemd-networkd` (if needed, disable `NetworkManager`, enable `systemd-networkd`, install `Netplan`). Other useful tools of your choice can be installed (e.g., the `sensors` package to monitor CPU temperature on the Raspberries). You can perform the above configuration yourself; however, we recommend proceeding carefully and following the steps described below.
+
+>   [!IMPORTANT]
+> Below, **differences in configuration between Debian and Ubuntu** will be clearly highlighted in the relevant parts of the description by specifying which system they apply to. In all other cases, the information provided applies to both systems.
 
 1. Flash the Raspberry Pi OS Lite 64bit (a port of Debian 12 Bookworm with no desktop environment) onto microSD card. We use Raspberry Pi Imager for that, but other tools can be used as well.
    * make sure password authentication for ssh access is enabled (the instructions given in the following fit this authentication method); this allows one to avoid the use of authentication keys in Ansible (not recommended for production, but simpler)
@@ -150,11 +153,11 @@ Now you can proceed to subsection 3.ii.
 
    * it is recommended to set the host name, user name and the password as you will use them later in Kolla-Ansible playbooks. In the examples below, we set "ubuntu" for both the user name and the password, and use the convention ost01, ost02, ... to set the host name of our RPis.
   
-3. After switching on the RPis, SSH to each of them using the credentials from step 1 above. The IP addresses of the RPis can be found in the management panel of your local router (e.g., in configurations with a Linksys router, check the ```Device list``` panel in the Linksys router GUI). These addresses are used only initially and will later be replaced with permanent addresses during network stack configuration on each RPi host (you will draw those permanent IP addresses from the address pool reserved as described in subsection 3.i).
+2. After switching on the RPis, SSH to each of them using the credentials from step 1 above. The IP addresses of the RPis can be found in the management panel of your local router (e.g., in configurations with a Linksys router, check the ```Device list``` panel in the Linksys router GUI). These addresses are used only initially and will later be replaced with permanent addresses during network stack configuration on each RPi host (you will draw those permanent IP addresses from the address pool reserved as described in subsection 3.i).
 
 **Execute steps 3-10 for each RPi**
 
-3. Add your user to the `sudo` group (adapt user name according to your setup):
+3. **[Debian only]** Add your user to the `sudo` group (adapt user name according to your setup):
 
    ```$ sudo usermod -aG sudo ubuntu```
 
@@ -165,7 +168,8 @@ Now you can proceed to subsection 3.ii.
 5. Install for the use by Ansible
 
   ```
-$ sudo apt-get install sshpass -y && sudo apt-get install ufw -y  <=== "install fw" needed only on Debian, default on Ubuntu
+$ sudo apt-get install sshpass -y
+$ sudo apt-get install ufw -y  # <=== **[Debian only]**, default for Ubuntu
 $ sudo visudo    ==> change user group "sudo" permissions to:
 # Allow members of group sudo to execute any command
 %sudo ALL=(ALL:ALL) NOPASSWD: ALL
