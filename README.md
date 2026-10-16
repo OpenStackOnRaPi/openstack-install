@@ -251,7 +251,7 @@ free -h
 df -h
 # create the swap, enable and make it persistent
 
-sudo fallocate -l 2G /swapfile
+sudo fallocate -l 4G /swapfile
 ls -lh /swapfile
 
 sudo chmod 600 /swapfile
