@@ -1033,8 +1033,12 @@ You are encouraged to review these files to study how persistent configuration o
 
 ```
 # on each RPi
+# NOTE: one would expect that 'systemctl restart systemd-networkd' should be sufficient to
+#   recofigure all virtual devices. However, once we had problems with brmux and we
+#   have been using the following workaround since then (we delete brmux and restart
+#   systemd afterwards).
 $ ip link set down brmux <=== this breaks cable connection (and ssh) to the RPi board so the following commands can be run only when accessing the boards using WiFi *)
-$ ip link del dev brmux
+$ ip link del dev brmux  <=== was needed because 'systemctl restart systemd-networkd' alone did not reconfigure brmux properly
 $ systemctl restart systemd-networkd
 ```
 
