@@ -103,9 +103,9 @@ All procedures described in this guide assume compliance with the setup options 
   
 ## 3. Local network and Raspberry Pi preparation
 
-In section 3.i we describe the basic configurations necessary for the physical devices of the cluster network.
+In section 3.i we describe the basic local network configurations necessary for the physical devices of the cluster network. In section 3.ii, Raspberry Pi system configuration is presented. In section 3.iii, network model used in our cluster is described together with configurations needed, and section 3.iv contains a description of network configuration for OpenStack _flat provider network_ (tagged VLAN provider networks are described elsewhere in this guide).
 
-In sections 3.ii, 3.iii, and 3.iv, models and configurations needed for your RPis are described. Configurations have to be applied independently to each RPi host in your cluster. They are given in a form corresponding to a manual procedure. However, you can automate many steps using bash scripts or other tools if you wish (_Note: sometimes a restart of the Raspberry Pi is required, so you'll likely need to create some semi-automatic installation scripts. Alternatively, you can use Ansible to completely automate the installation. However, discussing the details of such solutions is beyond the scope of this guide._) The process is split into two phases: system configuration (installs, upgrades, etc.; subsection 3.ii) and host network configuration (enabling networkd, installing netplan, configuring persistent virtual devices; subsection 3.iii). In addition, subsection 3.iv describes the initial configurations of the RPis that are recommended if we plan to use VLAN provider networks in the cluster.
+All settings presented have to be applied independently to each RPi host in your cluster. They are presented in a form suitable for direct manual use. However, you can automate many steps using bash scripts or other tools if you wish (_Note: sometimes a restart of the Raspberry Pi is required, so you'll likely need to create some semi-automatic installation scripts. Alternatively, you can use Ansible to completely automate the installation. However, discussing the details of such solutions is beyond the scope of this guide._) Tha main installation process is split into two phases: system configuration (installs including netplan and qemu-kvm, enabling networkd, upgrades, etc.; subsection 3.ii) and host network configuration (configuring persistent virtual devices according do adopted network model; subsection 3.iii). In addition, subsection 3.iv describes the initial configurations of the RPis that are recommended if we plan to use VLAN provider networks in the cluster.
 
 ### 3.i Local network preparation
 
@@ -297,7 +297,7 @@ To make sure the above structure is persistent (survives system reboots), we use
 ### 3.iv Flat provider network only
 
 > [!NOTE]
-> **This subsection 3.iv is prepared for the use of flat provider network only** in your OpenStack DC. You are not planning to deploy VLAN provider networks in your penStack cluster. Introducing VLAN provider networks requires more advanced configurations which is easier to do starting with settings different from those presented in this subsection. In particular, extra configurations for ```eth0```, ```brmux``` and ```veth1br``` are needed to serve VLANs in those devices. Respective VLAN configurations have also to be introduced in the TP-Link switch. If you are interested in setting not only flat, but also VLAN provider networks in your cluster, **skip the remainder of this subsection and go directly to subsection [3.v VLAN provider networks - part 1 (initial configuration for a flat network)](#3v-vlan-provider-networks---part-1-initial-configuration-for-a-flat-network)**.
+> **This subsection 3.iv is prepared for the use of flat provider network only** in your OpenStack DC. You are not planning to deploy VLAN provider networks in your penStack cluster. The deployment of VLAN provider networks requires more advanced configurations which is easier to do starting with settings somewhat different from those presented in this subsection. In particular, extra configurations for ```eth0```, ```brmux``` and ```veth1br``` are needed to serve VLANs in those devices. Respective VLAN configurations have also to be introduced in the TP-Link switch. If you are interested in setting not only flat, but also VLAN provider networks in your cluster, **skip the remainder of this subsection and go directly to subsection [3.v VLAN provider networks - part 1 (initial configuration for a flat network)](#3v-vlan-provider-networks---part-1-initial-configuration-for-a-flat-network)**.
 
   * for `networkd` backend, for the `veth0-veth0br` pair
 
@@ -412,9 +412,11 @@ network:
 #      dhcp6: false
 
 # Bridge brmux 
-# logically, this is a switch belonging to the local network of the
-# data centre provider network (normally, L2 segment of a physical network)
-#
+# In a real DC, this would be a switch belonging to the local network of the
+# data centre (typically, L2 segment of a physical network).
+# NOTE: bridge brmux is explicitly defined in this file solely for the case of
+# using only a flat provider network.
+
   bridges:
     brmux:
       interfaces:
