@@ -245,7 +245,7 @@ sudo reboot          # just for any case
 
    The procedure below has been drawn from [this guide](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
   ```
-# check to make sure what's on (no swap sholud be present in your RPis)
+# check to make sure what's on (no swap should be present in your RPis)
 sudo swapon --show
 free -h
 df -h
