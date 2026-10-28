@@ -610,14 +610,14 @@ $ docker run hello-world
 
 ### 5.i Kolla-Ansible installation
 
-The installation procedure is in principle the same as in the original [Kolla-Ansible guide for the 2025.1 release](https://docs.openstack.org/kolla-ansible/2025.1/user/quickstart.html).
+The installation procedure is in principle the same as in the original [Kolla-Ansible guide for the 2026.2 release](https://docs.openstack.org/kolla-ansible/2026.2/user/quickstart.html).
 
-One can use the original source document for 2025.1 and install on his own or take advantage of 100% ready-to-use commands documented below.
+One can use the original source document for 2026.2 and install on his own or take advantage of 100% ready-to-use commands documented below.
 
   * Install Python packages, create and activate virtual environment
 ```
 $ sudo apt-get update
-$ sudo apt-get install -y git python3-dev libffi-dev gcc libssl-dev python3-venv
+$ sudo apt-get install -y git python3-dev libffi-dev gcc libssl-dev libdbus-glib-1-dev python3-venv
 $ python3 -m venv kolla-2025.1   # you can use whatever name you want for the virtual environment
 $ source kolla-2025.1/bin/activate
 
