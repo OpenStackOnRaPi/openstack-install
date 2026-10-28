@@ -604,7 +604,7 @@ $ docker run hello-world
 ## 5. Kolla-Ansible and OpenStack installation
 
 > [!Note]
-> In the following, we assume `ubuntu@labs:~/labs/ostack$` to be the working (current) directory. When copy-pasting, adjust the commands according to your environment.
+> We now work on the management host. In the following, we assume `ubuntu@labs:~/labs/ostack$` to be the working (current) directory. When copy-pasting, adjust the commands according to your environment.
 
 ### 5.i Kolla-Ansible installation
 
