@@ -465,8 +465,8 @@ network:
 #      dhcp6: false
 
 # Bridge brmux 
-# logically, this is a switch belonging to the local network of the
-# data centre provider network (normally, L2 segment of a physical network)
+# Logically, this is a switch belonging to the local network of the
+# data centre network (typically, L2 segment of a physical network)
 #
   bridges:
     brmux:
