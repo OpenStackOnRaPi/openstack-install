@@ -782,17 +782,18 @@ enable_neutron_provider_networks: "yes"
 # the case with proxysql in OpenStack releases starting from 2025.1. Depending on your
 # platform/preferences, do one the following modifications.
 # (1) Kolla-Ansible 2023.1, all RPi releases: no changes are needed (leave the following untouched).
-# (2) Kolla-Ansible 2025.1+ and Raspberry Pi 5: One option is to change the kernel to kernel8 which can be done in
-# two ways. One of them is to modify the cmdline.txt file according to, e.g.,
-# https://pimylifeup.com/raspberry-pi-page-size/. The other option is to run
-# "sudo apt purge linux-image-rpi-2712" on your RPis. In both cases rebooting is
-# required for the change to take effect. This modification can well be done
+# (2) Kolla-Ansible 2025.1+ and Raspberry Pi 5: One can change the kernel on a Raspberry Pi 5
+# to kernel8 which can be done in two ways. One option is to modify the cmdline.txt file on
+# the RPi 5 according to, e.g., https://pimylifeup.com/raspberry-pi-page-size/. The other
+# option is to run "sudo apt purge linux-image-rpi-2712" on your RPis 5. In both cases
+# rebooting is required for the change to take effect. This modification can well be done
 # together with increasing swap memory size described in point 9,
 # section [RPi system configuration](#3ii-rpi-system-configuration).
-# (3) Kolla-Ansible 2025.1+ and Raspberry Pi 5: Alternatively to the above (2), the following
-# line should be uncommented to disable using proxysql. Kolla-Ansible 2025.1 will then use
-# haproxy # as a database loadbalancer (haproxy has been discontinued in OpenStack as a default
-# loadbalancer since 2025.1):
+# (3) Kolla-Ansible 2025.1+ and Raspberry Pi 5: Alternatively to option (2) above, the
+# following line should be uncommented in globals.yml to disable using proxysql.
+# Kolla-Ansible 2025.1+ will then use haproxy as a database loadbalancer (haproxy
+# has been discontinued in OpenStack as a default loadbalancer since 2025.1). This option
+# requires no changes to the RPi devices, and we have been using it successfully so far.
 # enable_proxysql: "no"
 enable_proxysql: "no"
 ```
