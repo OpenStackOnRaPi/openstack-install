@@ -465,8 +465,10 @@ network:
 #      dhcp6: false
 
 # Bridge brmux 
-# Logically, this is a switch belonging to the local network of the
-# data centre network (typically, L2 segment of a physical network)
+# In a real DC, this would be a switch belonging to the local network of the
+# data centre (typically, L2 segment of a physical network).
+# NOTE: bridge brmux is explicitly defined in this file solely for the case of
+# using only a flat provider network.
 #
   bridges:
     brmux:
