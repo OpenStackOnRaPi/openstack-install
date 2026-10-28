@@ -249,6 +249,7 @@ sudo reboot          # just for any case
 sudo swapon --show
 free -h
 df -h
+
 # create the swap, enable and make it persistent
 
 sudo fallocate -l 4G /swapfile
