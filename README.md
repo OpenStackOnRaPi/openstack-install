@@ -772,7 +772,8 @@ $ ansible -i multinode all -m ping
 $ sudo nano /etc/kolla/globals.yml
 ---
 # Valid options are ['centos', 'debian', 'rocky', 'ubuntu']
-kolla_base_distro: "debian"
+# we use Ubuntu images here
+kolla_base_distro: "ubuntu"
 openstack_tag_suffix: "-aarch64"
 kolla_internal_vip_address: "192.168.10.20"
 network_interface: "veth0"
