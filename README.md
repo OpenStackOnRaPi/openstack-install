@@ -539,17 +539,17 @@ Your network configuration is now the same as the one you would obtain following
 ### 4.i General notes
 
 1. Maintaining 100% consistency between the version of Kolla-Ansible used and the OpenStack release deployed is key for successfull installation of the OpenStack cloud. 
-2. This guide refers to OpenStack release ```2025.1``` and respective Kolla-Ansible guide is available under [this link](https://docs.openstack.org/kolla-ansible/2025.1/user/quickstart.html). Please, note the ```2025.1``` discriminator of OpenStack release in the Kolla-Ansible URI. For other releases of Kolla-Ansible, use its tag in place of `2025.1` in the link above.
+2. This guide refers to OpenStack release ```2026.2``` and respective Kolla-Ansible guide is available under [this link](https://docs.openstack.org/kolla-ansible/2026.2/user/quickstart.html). Please, note the ```2026.2``` discriminator of OpenStack release in the Kolla-Ansible URI. For other releases of Kolla-Ansible, use its tag in place of `2026.2` in the link above.
 3. The main goal of this guide is to instruct how to _**install**_ OpenStack cloud with Kolla-Ansible on Raspberry Pi cluster. For information on how to _**manage**_ OpenStack cloud using Kolla-Ansible, please refer to the original documentation of the Kolla-Ansible project.
-4. Be careful to install the right OS version. Kolla-Ansible/OpenStack 2025.1 requires Ubuntu 24.04 or Debian 12 on the management host (see the [support matrix](https://docs.openstack.org/kolla-ansible/2025.1/user/support-matrix.html)). For other releases, check respective support matrix.
+4. Be careful to install the right OS version. Kolla-Ansible/OpenStack 2026.2 requires Ubuntu 24.04 or Debian 12 on the management host (see the [support matrix](https://docs.openstack.org/kolla-ansible/2025.1/user/support-matrix.html)). For other releases, check respective support matrix.
 
 ### 4.ii VM creation and basic configs
 
 Here, we assume using a virtual machine, but things do not change if the management host is a physical machine.
 
-  * Create `Ubuntu 24.04 LTS` VM, preferably as a desktop machine. We are using `Ubuntu 24.04 LTS` for Kolla-Ansible 2025.1. Resource requirements for the VM are moderate (4GB RAM, 20GB disk, 1vCPU should be sufficient).
-  * We use VirtualBox and configure the network card of the VM to work in ```Bridged``` mode. Nevertheless, NAT mode should work as well in a basic scenario, but using briged mode is more convenient in non-standard situations (e.g., when one needs to copy files between the RPis and the management host). It is generally simpler when all components (cluster, management host, our physical host) operate in the same L2 segment.
-  * After launching the VM in VirtualBox, the copy-paste feature will probably not work. You will have have to install GuestAdditions. This can be done in a while. First follow the steps that follow.
+  * Create `Ubuntu 24.04 LTS` VM, preferably as a desktop machine. We are using `Ubuntu 24.04 LTS` for Kolla-Ansible 2026.2. Resource requirements for the VM are moderate (4GB RAM, 20GB disk, 1vCPU should be sufficient).
+  * We use VirtualBox and configure the network card of the VM to work in `Bridged` mode, but any other supervisor with similar capabilities should also work. `NAT` mode (instead of `Bridged`) should work as well in a basic scenario, but using briged mode is more convenient in non-standard situations (e.g., when one needs to copy files between the RPis and the management host). It is generally simpler when all components (cluster, management host, our physical host) operate in the same L2 segment.
+  * After launching the VM in VirtualBox, the copy-paste feature will probably not work. You will have have to install GuestAdditions. This can be done in a while. Before installing GuestAdditions complete the steps that follow.
   * Disable the automatic upgrade option in the VM; in the desktop, search for this setting in `Options`.
   * If the terminal suspends/does not open, the screen is flickering or the cursor takes the form of a black rectangle, disable Wayland display server protocol, see e.g., [this for 24.04](https://askubuntu.com/questions/1536250/disabling-wayland-permanently-under-ubuntu-24-04-1-lts-doesnt-work-in-virtualbo)
   * Assign sudo privileges to your user (in this guide, we assume username `ubuntu`)
@@ -564,7 +564,7 @@ $ sudo apt update && sudo apt upgrade
 
   * When using VirtualBox, install GuestAdditions - refer, e.g., to [this](https://linuxconfig.org/installing-virtualbox-guest-additions-on-ubuntu-24-04) 
     
-  * Enable passwordless sudo logging on the management host (required by Ansible) and reboot (reboot is necessary for guaranteeing Ansible permissions if you make all the installation in one attempt)
+  * Enable passwordless sudo logging on the management host (required by Ansible) and reboot (reboot is necessary for activating Ansible permissions if you make all the installation in one attempt)
   ```
 $ sudo apt install sshpass
 $ sudo reboot
@@ -573,7 +573,8 @@ $ sudo reboot
 ### 4.iii Docker installation
 
 > [!Note]
-> Docker can be installed according to [this original guide](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You can safely refer to that document. Below, we replicate it only for sake of completeness of this guide.
+> Kolla-Ansible needs Docker on the management (deployment) host because Kolla-Ansible uses the Docker CLI to manage containers on the target OpenStack nodes (not because the OpenStack services themselves need to run on the management host). Kolla-Ansible will automatically install the appropriate version of Docker on the OpenStack system hosts.
+> Docker can be installed on the management host according to [this original guide](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You may refer to this document with confidence. We have included it below solely to ensure the completeness of this guide.
 
   * Add Docker's official GPG key:
   ```
@@ -618,8 +619,8 @@ One can use the original source document for 2026.2 and install on his own or ta
 ```
 $ sudo apt-get update
 $ sudo apt-get install -y git python3-dev libffi-dev gcc libssl-dev libdbus-glib-1-dev python3-venv
-$ python3 -m venv kolla-2025.1   # you can use whatever name you want for the virtual environment
-$ source kolla-2025.1/bin/activate
+$ python3 -m venv kolla-2026.2   # you can use whatever name you want for the virtual environment
+$ source kolla-2026.2/bin/activate
 
 ```
 
@@ -630,12 +631,12 @@ $ rm -r <venv-root-folder-name->
 ```
 
 > [!Note]
-> From now on, we work in virtual environment kolla-2025.1. In the text below, the versions of all components installed are assumed to be compatible with kolla-2025.1 and should be changed appropriately if you use other release of Kolla-Ansible (follow respective Kolla-Ansible _Quick start section_ for each release: [quickstart](https://docs.openstack.org/kolla-ansible/YOUR-RELEASE/user/quickstart.html)).
+> From now on, we work in virtual environment kolla-2026.2 (or whatever name you assigned to this venv). In the text below, the versions of all components installed are assumed to be compatible with kolla-2026.2 and should be changed appropriately if you use other release of Kolla-Ansible (follow respective Kolla-Ansible _Quick start section_ for each release: [quickstart](https://docs.openstack.org/kolla-ansible/YOUR-RELEASE/user/quickstart.html)).
 
   * Install Kolla-Ansible in the active venv
 ```
 $ pip install -U pip
-$ pip install git+https://opendev.org/openstack/kolla-ansible@stable/2025.1
+$ pip install git+https://opendev.org/openstack/kolla-ansible@stable/2026.2
 ```
 
 > [!WARNING]
@@ -651,11 +652,11 @@ $ sudo mkdir -p /etc/kolla
 $ sudo chown $USER:$USER /etc/kolla
 ```
 
-  * Copy globals.yml and passwords.yml to /etc/kolla directory, and kolla-ansible inventory file to our working directory. We will customize these file for our deployment soon.
+  * Copy globals.yml and passwords.yml to the `/etc/kolla` directory, and kolla-ansible inventory file to our working directory. We will customize these file for our deployment soon.
     
 ```
-$ sudo cp -r kolla-2025.1/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
-$ cp kolla-2025.1/share/kolla-ansible/ansible/inventory/* .
+$ sudo cp -r kolla-2026.2/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
+$ cp kolla-2026.2/share/kolla-ansible/ansible/inventory/* .
 ```
 
   * Install Ansible Galaxy dependencies
@@ -663,6 +664,7 @@ $ cp kolla-2025.1/share/kolla-ansible/ansible/inventory/* .
 $ kolla-ansible install-deps
 ```
 
+####CZY ansible.cfg JEST JESZCZE POTRZEBNE?
   * Update Ansible configuration file ```ansible.cfg``` (it can be kept in the working directory or in directory ```/etc/ansible/ansible.cfg```)
 ```bash
 $ tee ansible.cfg << EOT
