@@ -664,7 +664,7 @@ $ cp kolla-2026.2/share/kolla-ansible/ansible/inventory/* .
 $ kolla-ansible install-deps
 ```
 
-  * Update Ansible configuration file `ansible.cfg`. This is our addition to prevent Ansible form SSH key checking as we use SSH password instead (simpler in our case, although less recommended in production). We also allow pipelining to improve performance and set forks to 4 as it is sufficient for our needs.
+  * Update Ansible configuration file `ansible.cfg`. This is our addition to prevent Ansible form SSH key checking as we use SSH password instead (simpler in our case, although less recommended in production); SUSSESS should be reported by Ansible. We also allow pipelining to improve performance and set forks to 4 as it is sufficient for our needs.
 
 ```
 $ tee ansible.cfg << EOT
