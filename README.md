@@ -664,9 +664,9 @@ $ cp kolla-2026.2/share/kolla-ansible/ansible/inventory/* .
 $ kolla-ansible install-deps
 ```
 
-####CZY ansible.cfg JEST JESZCZE POTRZEBNE?
-  * Update Ansible configuration file ```ansible.cfg``` (it can be kept in the working directory or in directory ```/etc/ansible/ansible.cfg```)
-```bash
+  * Update Ansible configuration file `ansible.cfg`. This is our addition to prevent Ansible form SSH key checking as we use SSH password instead (simpler in our case, although less recommended in production). We also allow pipelining to improve performance and set forks to 4 as it is sufficient for our needs.
+
+```
 $ tee ansible.cfg << EOT
 [defaults]
 host_key_checking=False
