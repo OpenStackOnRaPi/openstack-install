@@ -1,6 +1,6 @@
 # Deploying OpenStack on a Raspberry Pi cluster
 
-**Currently (as of October, 2026), this branch is unstable due to ongoing work on deploying OpenStack using Kolla-Ansible 2026.2 on a cluster running under Ubuntu, and the frequent content updates associated with this process.**
+**_Note: Currently (as of October, 2026), this branch is unstable due to ongoing work on deploying OpenStack using Kolla-Ansible 2026.2 on a cluster running under Ubuntu, and the frequent content updates associated with this process._**
 
 ## Summary
 
