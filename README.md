@@ -1,5 +1,7 @@
 # Deploying OpenStack on a Raspberry Pi cluster
 
+**Currently (as of October, 2026), this branch is unstable due to ongoing work on deploying OpenStack using Kolla-Ansible 2026.2 on a cluster running under Ubuntu, and the frequent content updates associated with this process.**
+
 ## Summary
 
 In this guide, we describe how to install OpenStack on a Raspberry Pi cluster using Kolla-Ansible. The main field of application of such clusters is instructional tools for teaching. A cluster of this type allows us to present/explain various features/concepts of OpenStack, some of them being hard or impossible to show using AIO or virtualized OpenStack setups (e.g., the configuration of provider networks). While you can find other guides on the Internet on this topic, they are generally based on old versions of OpenStack, do not address more advanced features as provider networks, and do not cover several important details that would make your OpenStack Raspberry Pi cluster run reliably.
@@ -10,8 +12,6 @@ In summary, both the Raspberry Pi 4 and 5 are suitable for setting up small and 
 
 > [!Note]
 >
-> **Currently (as of October, 2026), this branch is unstable due to ongoing work on deploying OpenStack using Kolla-Ansible 2026.2 on a cluster running under Ubuntu, and the frequent content updates associated with this process.**
-> 
 > At the time of writing the first version of this guide, the stable latest release of Kolla-Ansible is 2025.1 (Epoxy).
 >
 > Update, October 2025: Raspberry Pi OS Trixie (Debian 13) and OpenStack 2025.2 have been released, but we have not tested them so far.
