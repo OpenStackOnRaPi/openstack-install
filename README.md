@@ -10,7 +10,7 @@ In summary, both the Raspberry Pi 4 and 5 are suitable for setting up small and 
 
 > [!Note]
 >
-> **Currently (as of October 30, 2026), this branch is unstable due to ongoing work on deploying OpenStack using Kolla-Ansible 2026.2 on a cluster running under Ubuntu, and the frequent content updates associated with this process.**
+> **Currently (as of October, 2026), this branch is unstable due to ongoing work on deploying OpenStack using Kolla-Ansible 2026.2 on a cluster running under Ubuntu, and the frequent content updates associated with this process.**
 > 
 > At the time of writing the first version of this guide, the stable latest release of Kolla-Ansible is 2025.1 (Epoxy).
 >
