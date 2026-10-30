@@ -9,7 +9,7 @@ A number of OpenStack cluster configurations have been tested thoroughly. Each c
 In summary, both the Raspberry Pi 4 and 5 are suitable for setting up small and cheap, bare metal OpenStack clusters for educational purposes. This guide describes the complete installation procedure for the release 2025.1 using Kolla-Ansible, and assuming the deployment of core (default in Kolla-Ansible) OpenStack modules. Although this description directly refers to Kolla-Ansible 2025.1 it can serve as a reference also for newer releases. However, in the latter case, one should first check for OS compatibility matrix and pay attention to differences regarding the Kolla-Ansible installation. Updates will be added to this guide as new findings, propositions or recommendations emerge.
 
 > [!Note]
-> At the time of writing this guide, the stable latest release of Kolla-Ansible is 2025.1 (Epoxy).
+> At the time of writing the first version of this guide, the stable latest release of Kolla-Ansible is 2025.1 (Epoxy).
 >
 > Update, October 2025: Raspberry Pi OS Trixie (Debian 13) and OpenStack 2025.2 have been released, but we have not tested them so far.
 >
