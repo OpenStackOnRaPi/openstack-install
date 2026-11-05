@@ -464,23 +464,21 @@ network:
       routes:
         - to: 0.0.0.0/0
           via: 192.168.10.1  # ADJUST to match your Linksys router
-#    veth0br:
-#      dhcp4: false
-#      dhcp6: false
+    veth0br:
+      dhcp4: false
+      dhcp6: false
 
     # veth1-veth1br pair (defined in networkd file as veth pair)
     veth1:                  # neutron_external_interface for kolla-ansible
       dhcp4: false
       dhcp6: false
-#    veth1br:
-#      dhcp4: false
-#      dhcp6: false
+    veth1br:
+      dhcp4: false
+      dhcp6: false
 
 # Bridge brmux 
 # In a real DC, this would be a switch belonging to the local network of the
 # data centre (typically, L2 segment of a physical network).
-# NOTE: bridge brmux is explicitly defined in this file solely for the case of
-# using only a flat provider network.
 #
   bridges:
     brmux:
