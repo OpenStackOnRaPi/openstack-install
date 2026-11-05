@@ -206,6 +206,8 @@ $ sudo nano /etc/ufw/sysctl.conf  <= this path should be used on Raspberry Pi Tr
 # uncomment the line: net.ipv4.ip_forward=1
 # save the file, quit and check if forwarding has been activated:
 $ sudo sysctl -p
+# WARNING: For Raspberry Pi Trixie, if sysctl command reports "sysctl: cannot open "/etc/sysctl.conf": No such file or directory" then create a symlink (or hard link):
+$ sudo ln -s /etc/ufw/sysctl.conf /etc/sysctl.conf
   ```
 
 8. Install qemu-system-arm (qemu-kvm) - critical for enabling virtualization
