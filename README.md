@@ -234,7 +234,7 @@ Except the _Note_ given above, this section only applies when you are going to u
 
 Follow the instructions below.
 
-   * For **[Raspberry Pi OS]**
+   * For **[Raspberry Pi OS]up to Debian12/Bookworm**
 
    The procedure below has been drawn from [this guide](https://itsfoss.com/pi-swap-increase/). The highest usage of swap memory for OpenStack control node that we have observed so far is 2.5GB. Below we set the size to **`4096`** which should provide a safe margin.
   ```
@@ -247,6 +247,12 @@ sudo dphys-swapfile swapon
 swapon --show        # ensure it is now active
 sudo reboot          # just for any case
   ```
+
+   * For **[Raspberry Pi OS] starting form Debian13/Trixie**
+
+   For details, check `man swap.conf` on your Raspbbery Pi OS. At the moment we stay with default settings (automatic use of `zram+file` mechanism). To be monitored with top/htop to detect potantial problems and adjust the settings.
+
+
    * For **[Ubuntu]**
 
    The procedure below has been drawn from [this guide](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
