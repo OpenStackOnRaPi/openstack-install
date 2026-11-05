@@ -201,6 +201,7 @@ while :; do sensors; sleep 30; done
 
   ```
 $ sudo nano /etc/sysctl.conf
+$ sudo nano /etc/ufw/sysctl.conf  <= this path should be used on Raspberry Pi Trixie (Debian 13)
 
 # uncomment the line: net.ipv4.ip_forward=1
 # save the file, quit and check if forwarding has been activated:
