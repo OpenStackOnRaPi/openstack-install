@@ -455,7 +455,7 @@ network:
     # veth0-veth0br pair (defined in networkd file as veth pair)
     veth0:                  # network_interface for kolla-ansible
       addresses:
-        - 192.168.1.6x/24   # ADJUST THIS ADDRESS FOR EACH YOUR RPI !!!!!!!!
+        - 192.168.10.3x/24   # ADJUST THIS ADDRESS FOR EACH YOUR RPI !!!!!!!!
       nameservers:
         addresses:
           - 192.168.10.1     # ADJUST to match your Linksys dhcp server
