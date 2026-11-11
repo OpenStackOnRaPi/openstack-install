@@ -393,32 +393,32 @@ network:
       dhcp6: false
 
     # veth0-veth0br pair (defined in networkd file as veth pair)
-    veth0:                  # network_interface for kolla-ansible
+    veth0:                   # network_interface for kolla-ansible
       addresses:
-        - 192.168.1.6x/24   # ADJUST THIS ADDRESS FOR EACH YOUR RPI !!!!!!!!
+        - 192.168.10.3x/24   # ADJUST THIS ADDRESS FOR EACH YOUR RPI !!!!!!!!
       nameservers:
         addresses:
-          - 192.168.1.1     # ADJUST to match your Linksys dhcp server
+          - 192.168.10.1     # ADJUST to match your Linksys dhcp server
           - 8.8.8.8
           - 8.8.2.2
       routes:
         - to: 0.0.0.0/0
-          via: 192.168.1.1  # ADJUST to match your Linksys router
-#    veth0br:
-#      dhcp4: false
-#      dhcp6: false
-
-    # veth1-veth1br pair (defined in networkd file as veth pair)
-    veth1:                  # neutron_external_interface for kolla-ansible
+          via: 192.168.10.1  # ADJUST to match your Linksys router
+    veth0br:
       dhcp4: false
       dhcp6: false
-#    veth1br:
-#      dhcp4: false
-#      dhcp6: false
+
+    # veth1-veth1br pair (defined in networkd file as veth pair)
+    veth1:                   # neutron_external_interface for kolla-ansible
+      dhcp4: false
+      dhcp6: false
+    veth1br:
+      dhcp4: false
+      dhcp6: false
 
 # Bridge brmux 
-# logically, this is a switch belonging to the local network of the
-# data centre provider network (normally, L2 segment of a physical network)
+# logically, in a real DC this is a switch belonging to the local network of the
+# data centre provider network (normally, L2 segment in a physical network)
 #
   bridges:
     brmux:
