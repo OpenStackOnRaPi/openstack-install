@@ -234,9 +234,6 @@ sudo reboot          # just for any case
 
 We disable NetworkManager and activate systemd-networkd daemon to manage network configurations. If one prefers to use NetworkManager it will be necessary to convert all specifications of virtual network devices provided in this repository into NetworkManager structures on her/his own.
 
-> [!Note]
-> Steps 1 and 2 below are needed only in case of Debian and can be skipped for Ubuntu (in our case, if one is lucky to have access to Kolla-Ansible container images for Ubuntu).
-
    * Stop NetworkManager, and start systemd-networkd
 
 We use networkd to have persistent configuration of network devices in our RPis. One can use NetworkManager for this, but it will be necessary to convert the code from networkd notation to NetworkManager notation (both notations differ one from the other).
