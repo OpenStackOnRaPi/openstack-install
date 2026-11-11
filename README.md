@@ -224,7 +224,8 @@ Except the _Note_ given above, this section only applies when you are going to u
 sudo dphys-swapfile swapoff
 sudo nano /etc/dphys-swapfile
 CONF_SWAPSIZE=4096   # <=== desired size, safe
-CONF_MAXSWAP=4096    # <=== should be no less than CONF_SWAPSIZE (limit)
+CONF_MAXSWAP=4096    # <=== enable, should be no less than CONF_SWAPSIZE (limit)
+(save the changes)
 sudo dphys-swapfile setup
 sudo dphys-swapfile swapon
 swapon --show        # ensure it is now active
