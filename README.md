@@ -623,16 +623,16 @@ forks=4
 EOT
 ```
 
-  * Once we have prepared networking on our RPis we should update the file ```/etc/hosts``` (on the management host) by adding our OpenStack hosts (RPis); this information will be used by Ansible. For example:
+  * Once we have prepared networking on our RPis we should update the file ```/etc/hosts``` (on the management host) by adding our OpenStack hosts (RPis); this information will be used by Ansible. For example (adjust the addresses according to your environment):
 ```
 $ cat /etc/hosts
 127.0.0.1	localhost
 127.0.1.1	labs
 
-192.168.10.21    ost01
-192.168.10.22    ost02
-192.168.10.23    ost03
-192.168.10.24    ost04
+192.168.10.31    ost01
+192.168.10.32    ost02
+192.168.10.33    ost03
+192.168.10.34    ost04
 ...
 ```
 
