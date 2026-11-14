@@ -721,7 +721,7 @@ $ sudo nano /etc/kolla/globals.yml
 # Valid options are ['centos', 'debian', 'rocky', 'ubuntu']
 kolla_base_distro: "debian"
 openstack_tag_suffix: "-aarch64"
-kolla_internal_vip_address: "192.168.10.20"
+kolla_internal_vip_address: "192.168.10.30"
 network_interface: "veth0"
 neutron_external_interface: "veth1"
 enable_neutron_provider_networks: "yes"
@@ -744,7 +744,6 @@ enable_neutron_provider_networks: "yes"
 # line should be uncommented to disable using proxysql. Kolla-Ansible 2025.1 will then use
 # haproxy # as a database loadbalancer (haproxy has been discontinued in OpenStack as a default
 # loadbalancer since 2025.1):
-# enable_proxysql: "no"
 enable_proxysql: "no"
 ```
 
