@@ -337,11 +337,11 @@ EOT
 ```
 sudo tee /etc/netplan/50-cloud-init.yaml << EOT
 # This file is generated from information provided by the datasource. Changes
-# to it will not persist across an instance reboot.  In ubuntu, to disable
+# to it will not persist across an instance reboot.  In Ubuntu, to disable
 # cloud-init's network configuration capabilities, write a file
-# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following content:
 # network: {config: disabled}
-# in debian, this is not needed.
+# In debian, this is not needed.
 #=========================================#
 # Network configs for the OpenStack lab   #
 #=========================================#
