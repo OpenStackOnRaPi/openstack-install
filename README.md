@@ -833,21 +833,15 @@ Postdeployment includes installing OpenStack CLI tool, running additional `post-
   * Install `python-openstackclient` to access OpenStack commands in the console ro maintained release of Koll-Ansible
     ```bash
     $ pip install python-openstackclient -c https://releases.openstack.org/constraints/upper/2025.1
-           ==> for unmaintained release, e.g. fors 2023.1: 
-               pip install python-openstackclient -c https://opendev.org/openstack/requirements/raw/branch/unmaintained/2023.1/upper-constraints.txt
+           ==> for unmaintained release, e.g. for 2025.1: 
+               pip install python-openstackclient -c https://opendev.org/openstack/requirements/raw/branch/unmaintained/2025.1/upper-constraints.txt
     ```
 
   * Run post-deploy script, create appropriate directories and copy cloud.config file (it will be needed in a while by the install-runonce stript to create your first network stack): 
 
     ```
-
-    # for release 2025.1 (this form is slightly different compared to 2023.1 because inventory directory /etc/kolla/ansible/inventory has been
-    # introduced in 2025.1 and the script post-deploy requires this inventory as a command parameter; however, this change has not been
-    # reflected in the original Kolla-Ansible documentation for 2025.1); we of course can reference inventory file located elsewhere, e.g., in our
-    # working directory as assumed below:
     $ kolla-ansible post-deploy -i multinode    
     $ mkdir -p ~/.config/openstack
-    $ sudo cp /etc/kolla/clouds.yaml /etc/openstack/clouds.yaml
     $ cp /etc/kolla/clouds.yaml ~/.config/openstack/clouds.yaml
     #if you see error notification about unreachability of a file, do: $ chmod -R u+r <unreachable-directory-name> and repeat above "copy" operations
     ```
