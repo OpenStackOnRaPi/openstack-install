@@ -902,12 +902,14 @@ After running `./init-runonce.20xy.z`, the following OpenStack objects are creat
 
 #### 6.i.a Shut down the cluster
 
-This will stop the entire cluster (to eventually power off the RPis) without damaging anything. After that it will be possible to power on the RPis and resume complete OpenStack recovering also the state of all your instances.
+This will stop the entire cluster without damaging anything. You will be able to `sudo shutdown` the Raspberries afterwards and switch off the power (unplug the TP-Link switch). It will be possible to power on the cluster again and resume the OpenStack, recovering also the state of all your instances (see next subsection).
 
   * Stop containers
     ```
     $ kolla-ansible stop -i multinode --yes-i-really-really-mean-it
     ```
+Stopping the containers will take several minutes - be patient.
+
 > [!Warning]
 > If Ansible issues a notification as below informing about certain hosts being ureachable, run **`kolla-ansible stop`** command again.
 > ```
@@ -931,14 +933,15 @@ This will stop the entire cluster (to eventually power off the RPis) without dam
     
  #### 6.i.b Start the cluster
 
-This will restart the entire cluster after it has been stopped and resume OpenStack. In our case, it will also recover the state of all instances due to setting `resume_guests_state_on_host_boot = true` in the `nova-compute.conf` file.
+This will restart the entire cluster after it has been stopped and resume OpenStack. In our case, it will also recover the state of all instances due to setting `resume_guests_state_on_host_boot = true` in the `nova-compute.conf` file. Execute the following steps.
  
-  * Power on RPis
+  * Power on the TP-Link switch and the Linksys router.
 
   * On the management host: activate the virtual environment of your Kolla-Ansible installation and resume OpenStack operation by executing:
     ```
     $ kolla-ansible deploy-containers -i multinode 
     ```
+Deploying the containers will take several minutes.
 
 ### 6.ii Destroy your cluster
 
