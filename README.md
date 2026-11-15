@@ -896,13 +896,21 @@ After running `./init-runonce.20xy.z`, the following OpenStack objects are creat
 
   * now you can ssh to the instance; both password and key authentication work for the cirros (the key was installed in the instance by the `openstack create` command you run above); the user is `cirros` and the passoword is `gocubsgo`
 
-## 6. Managing your cluster 
+## 6. Managing your cluster
+
+[Kolla-Ansible CLI](https://docs.openstack.org/kolla-ansible/latest/user/operating-kolla.html) allows one to manage OpenStack clusters which includes operations such as container image update, addition of servers to the cluster, etc. In our lab, the most useful ones are stopping, starting and destroying OpenStack containers.
+
+Stopping and starting containers allows for the safe shutdown of the OpenStack system and its subsequent resumption. It should be noted that shutting down the OpenStack system (by stopping the containers) is a necessary prerequisite before disconnecting any equipment — for instance, when the entire infrastructure is to be powered down for an extended period to save energy. Please be aware that the process of stopping and starting the cluster takes approximately 20 minutes in total.
+
+Destroying the containers removes current OpenStack deployment which is useful when a failure occurs and one wishes to reinstall OpenStack.
+
+Complete procedures are described in the remainder of this section.
 
 ### 6.i Shut down the cluster and start it again
 
 #### 6.i.a Shut down the cluster
 
-This will stop the entire cluster without damaging anything. You will be able to `sudo shutdown` the Raspberries afterwards and switch off the power (unplug the TP-Link switch). It will be possible to power on the cluster again and resume the OpenStack, recovering also the state of all your instances (see next subsection).
+This will stop the entire cluster without damaging anything. You will be able to `sudo shutdown` the Raspberries afterwards and power down all equipment (unplug the TP-Link switch and the Linksys router). It will be possible to power on the cluster again and resume the OpenStack system, recovering also the state of all your instances (see next subsection).
 
   * Stop containers
     ```
@@ -945,14 +953,17 @@ Deploying the containers will take several minutes.
 
 ### 6.ii Destroy your cluster
 
-To reinstall your cluster in case of failure, first destroy current installation (this cleans RPis from all Kolla-Ansible/OpenStack artifacts). To do this, it is best to first stop or remove all running virtual machine instances in the cluster and only then run the command:
+To reinstall your cluster in case of failure you should destroy current deployment. This should clean up containers and volumes in the cluster. Before destroying the deployment, tt is best to first stop (for example, via the OpenStack graphical interface) or delete (using the `virsh` tool on Linux) all virtual machine instances running in the cluster (otherwise, they will remain as "orphaned" objects).
+
+The `destroy` operation is invoked as follows:
 
 ```
 $ kolla-ansible destroy -i multinode --yes-i-really-really-mean-it
 ```
 
-> [!Note]
+> [!Important]
 > If you destroy your cluster with running VM instances then they will survive the operation and you will have to remove them manually using `virsh`.
+> After successfully destroying the deployment it is recommended to clean all remaining OpenStack artifacts
 
 ## 7. VLAN provider networks - part 2 (enabling and using VLAN provider networks)
 
