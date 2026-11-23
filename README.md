@@ -1065,7 +1065,7 @@ The resulting provider network `public2` differs from the network created in the
 Concluding, this example can be regarded as yet another pattern of organizing inter-instance comunication in an OpenStack cluster. However, if you have a more advanced router where the ports can handle tagged frames, than `public2` can easily be converted into full-fledged external network.
 
 
-### 7.ii Separating the flat network using a VLAN
+### 7.iii Separating the flat network using a VLAN
 
 As an additional exercise, you can use VLAN to isolate the traffic of the flat provider network in the physical part of your L2 segment (i.e., between the TP-Link switch and the RPis). That is, we want the untagged traffic corresponding to the flat provider network in our cluster to be carried in a dedicated VLAN between the TP-Link switch and the `brmux` virtual devices in the RPis. Please note that such a VLAN will be separate from the VLANs created for the tagged VLAN provider networks and will penetrate the cluster more shallowly than the provider VLANs. Its traffic will be unatgged when leaving TP-Link via Port 5 (this is similar to VLAN provider networks rendered as external, but also when leaving `brmux` via devices `veth0br` or `veth1br` (of course, untagged traffic in the opposite direction appearing on TP-Link and `brmux` devices will be tagged with the ID of our additional VLAN). Effectively, OpenStack and clients of the Linksys router will perceive the flat provider network unchanged (its traffic will be untagged for OpenStack and Linksys clients), but at the same time this traffic will be isolated using a VLAN on the remaining part of the physical network.
 
