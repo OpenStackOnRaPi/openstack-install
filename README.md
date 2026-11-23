@@ -127,7 +127,7 @@ Make sure your TP-Link switch is set to the factory settings. This can be perfor
    <img src=images/tplink-factory.png width='60%' />
 </p>
 
-> [!Note]
+> [!Important]
 > You can check the IP address of yout TP-Link switch in the management portasl of Linksys (or TOTO-Link) router. For a TP-Link switch, after restoring factory settings, we log in with username=`admin`, password=`admin` and the password change is forced upon the first login. The management portal of the switch is intuitive. To access it, you can use a Web browser and (on Windows) _Easy Smart Configuration Utility_ application. You can download both the guides and the configuration utility software from [here](https://www.tp-link.com/pl/support/download/tl-sg105pe/).
 
 Now you can proceed to subsection 3.ii.
@@ -248,6 +248,9 @@ $ sudo apt-get update && sudo apt-get -y install netplan.io
   ```
 
 ### 3.iii RPi network model
+
+> [!TIP]
+> **Brief description:** Learn network model for our OpenStack installationAs we work with Netplan and networkd it is first needed to disable NetworkManager backend and start systemd-networkd, and install Netplan. Prepare networkd and Netplan files for persistent configuration of network devices according to our model. Configuration can follow two tracks. The first one is applicable if one does not plan to introduce VLAN tagged provider networks in the OpenStack cluster. The second track assumes that we first create only a flat provider network, but later (section 7) extend this configuration to also allow for VLAN tagged provider networks in the OpenStack cluster.
 
 #### Network configuration options
 
