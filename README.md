@@ -985,8 +985,11 @@ In the `VLAN -> 802.1Q VLAN Configuration` tab, enable VLAN support using the `E
 
 On each RPi, replace four files in the `/etc/systemd/network` directory with their new version defining the VLAN configuration. Those new versions are available in this repository in directory `vlanned/etc/systemd/network`- copy them to your RPis.
 
-> [!Warning]
-> Remember that it is necessary to only replace the files fromn the `vlanned/etc/systemd/network` directory **keeping untouched remaining files** already present on the RPis in directory `/etc/systemd/network`. Otherwise you will cut off remote access to your RPis unless you enable WiFi access to the boards before. As a last resort, to avoid a complete reinstallation, you will need to connect your devices to a monitor, keyboard, and mouse.
+> [!Important]
+> 
+> As this step requires to reboot your RPis it is recommended to stop OpenStack by running `kolla-ansible stop -i multinode --yes-i-really-really-mean-it` before starting VLAN configurations and resume OpenStack again by running `kolla-ansible deploy-containers -i multinode` after all configurations have beed completed. Otherwise you risk OpenStack becoming unstable.
+> 
+> Remember that you should only replace the files located in the `vlanned/etc/systemd/network` directory, **leaving all other files** already present in the `/etc/systemd/network` directory on the RPi devices untouched. Otherwise you will cut off remote access to your RPis unless you enable WiFi access to the boards before. As a last resort, to avoid a complete reinstallation, you will need to connect your RPis to a monitor, keyboard, and mouse.
 
 You are encouraged to review these files to learn how persistent configuration of VLANs can be achieved in Linux. The files contain explanation of each construct used. After uploading them, you can restart the RPi with the `reboot` command. Alternatively, if you can reach your RPis using Linksys WiFi access point or serial port (GPIO), you can restart only the networking system with the following commands:
 
