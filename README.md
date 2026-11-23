@@ -40,10 +40,10 @@ In summary, both the Raspberry Pi 4 and 5 are suitable for setting up small and 
    1. [Setting VLANs for provider networks](#7i-setting-vlans-for-provider-networks)
       1. [Setting VLANs in the physical network (the TP-Link switch)](#7ia-setting-vlans-in-the-physical-network-the-tp-link-switch)
       2. [Setting VLANs on the RPi hosts](#7ib-setting-vlans-on-the-rpi-hosts)
-      3. [Separating the flat network using a VLAN](#7ic-separating-the-flat-network-using-a-VLAN)
-   3. [Creating and using VLAN provider networks](#7ii-creating-and-using-vlan-provider-networks)
+   2. [Creating and using VLAN provider networks](#7ii-creating-and-using-vlan-provider-networks)
       1. [Provider network dedicated to a tenant](#7iia-provider-network-dedicated-to-a-tenant)
       2. [External network using VLAN provider network](#7iib-external-network-using-vlan-provider-network)
+   3. [Separating the flat network using a VLAN](#7iii-separating-the-flat-network-using-a-VLAN) 
 8. [ADDENDUM - accessing the cluster using VPN](#8-addendum---accessing-the-cluster-using-vpn)
    
 ## 1. Introduction
