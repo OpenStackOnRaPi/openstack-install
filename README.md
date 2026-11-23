@@ -1004,32 +1004,6 @@ $ systemctl restart systemd-networkd
 
 After completing the above steps, VLANs 101, 102 and 103 will also be activated in the virtual devices on our RPi hosts. This will make these networks finally ready for building OpenStack VLAN provider networks on top of them.
 
-#### 7.i.c Separating the flat network using a VLAN
-
-As an additional exercise, you can use VLAN to isolate the traffic of the flat provider network in the physical part of your L2 segment (i.e., between the TP-Link switch and the RPis). That is, we want the untagged traffic corresponding to the flat provider network in our cluster to be carried in a dedicated VLAN between the TP-Link switch and the `brmux` virtual devices in the RPis. Please note that such a VLAN will be separate from the VLANs created for the tagged VLAN provider networks and will penetrate the cluster more shallowly than the provider VLANs. Its traffic will be unatgged when leaving TP-Link via Port 5 (this is similar to VLAN provider networks rendered as external, but also when leaving `brmux` via devices `veth0br` or `veth1br` (of course, untagged traffic in the opposite direction appearing on TP-Link and `brmux` devices will be tagged with the ID of our additional VLAN). Effectively, OpenStack and clients of the Linksys router will perceive the flat provider network unchanged (its traffic will be untagged for OpenStack and Linksys clients), but at the same time this traffic will be isolated using a VLAN on the remaining part of the physical network.
-
-The practical benefit of using this extra encapsulation will be increased security in the physical part of our network infrastructure (not a fundamental change, but worth mentioning). From an educational point of view, the procedure described here allows for a better understanding of the essence of the VLAN provider network concept in OpenStack (described in the previous two subsections).
-
-Follow the steps described below.
-
-* Declare the additional VLAN in the TP-Link switch (we set VLAN ID = 2 but anthing different from the VLAN IDs reserved for provider networks will be fine). As before, you do this in the `VLAN -> 802.1Q VLAN Configuration` tab.
-
-<p align="center">
- <img src=images/tplink-vlan2.png width='60%' />
-</p>
-
-* Now, uncomment VLAN2 declarations (the parts related to `[BridgeVLAN] VLAN=2`) in network files `02-ost-eth0.network`, `10-ost-net-ext-veth1br.network` and `10-ost-net-itf-veth0br.network` in the `/etc/systemd/network directory`.
-
-* Reboot the RPis or the networking (via WiFi) as described in the previous subsection. (This step is needed because TP-Link already operates on VLAN2 and tags the Linksys traffic, but the RPi side needs a reboot to start serving VLAN2; otherwise untagged flat network traffic will be blocked.)
-
-* Finally, in the `VLAN -> 802.1Q PVID Setting` tab, set the VLAN ID 2 on Port 5 to tag the traffic from the router (Linksys) directed to the cluster.
-
-<p align="center">
- <img src=images/tplink-pvid2.png width='60%' />
-</p>
-
-As before, you should now be able to access OpenStack via the dashboard or the OpenStack CLI (this time over VLAN-isolated connection in the TP-Link<->RPi network segment).
-
 ### 7.ii Creating and using VLAN provider networks
 
 #### 7.ii.a Provider network dedicated to a tenant
@@ -1089,6 +1063,35 @@ This network will be able to contain subnetworks with IP address pools allocated
 The resulting provider network `public2` differs from the network created in the previous section in that if we share `public2`, it can span all tenants in the cluster. Both networks are similar to each other in that they are tagged provider networks and in current form are secure by disabling destinations outside the cluster (enabling such a communication would require additional configurations to be performed by the administrator). Both can host a DHCP server, or IP addresses will need to be manually assigned to the connected virtual machines and router ports.
 
 Concluding, this example can be regarded as yet another pattern of organizing inter-instance comunication in an OpenStack cluster. However, if you have a more advanced router where the ports can handle tagged frames, than `public2` can easily be converted into full-fledged external network.
+
+
+### 7.ii Separating the flat network using a VLAN
+
+As an additional exercise, you can use VLAN to isolate the traffic of the flat provider network in the physical part of your L2 segment (i.e., between the TP-Link switch and the RPis). That is, we want the untagged traffic corresponding to the flat provider network in our cluster to be carried in a dedicated VLAN between the TP-Link switch and the `brmux` virtual devices in the RPis. Please note that such a VLAN will be separate from the VLANs created for the tagged VLAN provider networks and will penetrate the cluster more shallowly than the provider VLANs. Its traffic will be unatgged when leaving TP-Link via Port 5 (this is similar to VLAN provider networks rendered as external, but also when leaving `brmux` via devices `veth0br` or `veth1br` (of course, untagged traffic in the opposite direction appearing on TP-Link and `brmux` devices will be tagged with the ID of our additional VLAN). Effectively, OpenStack and clients of the Linksys router will perceive the flat provider network unchanged (its traffic will be untagged for OpenStack and Linksys clients), but at the same time this traffic will be isolated using a VLAN on the remaining part of the physical network.
+
+The practical benefit of using this extra encapsulation will be increased security in the physical part of our network infrastructure (not a fundamental change, but worth mentioning). From an educational point of view, the procedure described here allows for a better understanding of the essence of the VLAN provider network concept in OpenStack (described in the previous two subsections).
+
+Follow the steps described below.
+
+* Similarly to the **_Important_** note from [section 7.i.b](#7ib_setting_vlans_on_the_rpi_hosts), it is recommended to stop OpenStack first and resume it once all VLAN configurations in this section have been completed.
+
+* Declare the additional VLAN in the TP-Link switch (we set VLAN ID = 2 but anthing different from the VLAN IDs already reserved for OpenStack provider networks will be fine). As before, you do this in the `VLAN -> 802.1Q VLAN Configuration` tab.
+
+<p align="center">
+ <img src=images/tplink-vlan2.png width='60%' />
+</p>
+
+* Now, uncomment VLAN2 declarations (the parts related to `[BridgeVLAN] VLAN=2`) in network files `02-ost-eth0.network`, `10-ost-net-ext-veth1br.network` and `10-ost-net-itf-veth0br.network` in the `/etc/systemd/network directory`.
+
+* Reboot the RPis or the networking (via WiFi) as described in the previous subsection. (This step is needed because TP-Link already operates on VLAN2 and tags the Linksys traffic, but the RPi side needs a reboot to start serving VLAN2; otherwise untagged flat network traffic will be blocked.)
+
+* Finally, in the `VLAN -> 802.1Q PVID Setting` tab, set the VLAN ID 2 on Port 5 to tag the traffic from the router (Linksys) directed to the cluster.
+
+<p align="center">
+ <img src=images/tplink-pvid2.png width='60%' />
+</p>
+
+As before, you should now be able to access OpenStack via the dashboard or the OpenStack CLI (this time over VLAN-isolated connection in the TP-Link<->RPi network segment).
 
 ## 8. ADDENDUM - accessing the cluster using VPN
 
