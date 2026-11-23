@@ -493,9 +493,9 @@ Your network configuration is now the same as the one you would obtain following
 
 Here, we assume using a virtual machine, but things do not change if the management host is a physical machine.
 
-  * Create `Ubuntu 24.04 LTS` VM, preferably as a desktop machine. We are using `Ubuntu 24.04 LTS` for Kolla-Ansible 2025.1. Resource requirements for the VM are moderate (4GB RAM, 20GB disk, 1vCPU should be sufficient).
+  * Create `Ubuntu 24.04 LTS` VM, preferably as a desktop machine. We are using `Ubuntu 24.04.5 LTS` for Kolla-Ansible 2025.1. Resource requirements for the VM are moderate (4GB RAM, 20GB disk, 1vCPU should be sufficient).
   * We use VirtualBox and configure the network card of the VM to work in ```Bridged``` mode. Nevertheless, NAT mode should work as well in a basic scenario, but using briged mode is more convenient in non-standard situations (e.g., when one needs to copy files between the RPis and the management host). It is generally simpler when all components (cluster, management host, our physical host) operate in the same L2 segment.
-  * After launching the VM in VirtualBox, the copy-paste feature will probably not work. You will have have to install GuestAdditions. This can be done in a while. First follow the steps that follow.
+  * After launching the VM in VirtualBox, the copy-paste feature will probably not work. You will have have to install GuestAdditions. This can be done in a while. First, perform the following steps.
   * Disable the automatic upgrade option in the VM; in the desktop, search for this setting in `Options`.
   * If the terminal suspends/does not open, the screen is flickering or the cursor takes the form of a black rectangle, disable Wayland display server protocol, see e.g., [this for 24.04](https://askubuntu.com/questions/1536250/disabling-wayland-permanently-under-ubuntu-24-04-1-lts-doesnt-work-in-virtualbo)
   * Assign sudo privileges to your user (in this guide, we assume username `ubuntu`)
@@ -508,7 +508,7 @@ $ sudo usermod -aG sudo $USER
 $ sudo apt update && sudo apt upgrade
   ```
 
-  * When using VirtualBox, install GuestAdditions - refer, e.g., to [this](https://linuxconfig.org/installing-virtualbox-guest-additions-on-ubuntu-24-04) 
+  * Now, when using VirtualBox, install GuestAdditions - refer, e.g., to [this](https://linuxconfig.org/installing-virtualbox-guest-additions-on-ubuntu-24-04) 
     
   * Enable passwordless sudo logging on the management host (required by Ansible) and reboot (reboot is necessary for guaranteeing Ansible permissions if you make all the installation in one attempt)
   ```
