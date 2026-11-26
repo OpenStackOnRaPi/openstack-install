@@ -801,10 +801,12 @@ EOT
 > 3) We will explicitly use the name `physnet1` (and optionally `physnet2`, etc.) when creating a provider network as the admin. So, the admin must be aware of the presence of such `physnetX` networks in the configuration files. Respective command specifies the physical network (thus indirectly references a specific bridge, e.g. `br_ex`, and thus to a physical interface, `veth1`) on which the declared provider network (flat or VLAN) is to be created (in our case, you will have to use VLAN IDs from the pool associated with `physnet1`).
 > 4) According to already [mentioned document](https://docs.openstack.org/kolla-ansible/latest/reference/networking/neutron.html), the default Neutron physical network is physnet1 (or a comma separated list physnet1,...,physnetN when there are multiple external network interfaces). Using Kolla-Ansible, these names can customized explicitly in the globals.yml file by setting `neutron_physical_networks` to a comma-separated list of networks of the same length. In our case, such default values are assummed, so there is no `neutron_physical_networks` section in our file `globals.yml`.
 > 4) It is even possible to allow access to different physical netoworks for different types of nodes (e.g., network and compute nodes can have access to different physical netowrks). This can be done by configuring respective servers in kolla-ansible inventory file (multinode in our case), e.g:
+>   ```
 >   [network]
 >   netnode1 neutron_external_interface=eth1,eth2 neutron_bridge_name=br-ex1,br-ex2 neutron_physical_networks=physnet1,physnet2
 >   [compute]
 >   compnode2 neutron_external_interface=eth1 neutron_bridge_name: br-ex1 neutron_physical_networks=physnet2
+>   ```
 >   Of course, in this case, if physnet2 has to be interpreted consistently across the cluster than eth2 on netnode1 and eth1 on compnode2 should be in the same L2 segment.
 >   
 > Other related sources:
