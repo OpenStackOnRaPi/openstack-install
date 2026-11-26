@@ -429,7 +429,7 @@ EOT
 ```
 
   > [!IMPORTANT]
-  > Now edit file `/etc/netplan/50-cloud-init.yaml` and adjust static IP address, DHCP server and DNS server addresses for your RPi (see the Netplan code above). In the future, each RPi will be accessible on the static IP address just configured.
+  > Now edit file `/etc/netplan/50-cloud-init.yaml` and adjust static IP address, DHCP server and DNS server addresses for your RPi (see the Netplan code above). After completing this step, each RPi will be accessible on the static IP address just configured.
 
 ```
 sudo nano /etc/netplan/50-cloud-init.yaml
