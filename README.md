@@ -807,7 +807,7 @@ EOT
 >   [compute]
 >   compnode2 neutron_external_interface=eth1 neutron_bridge_name: br-ex1 neutron_physical_networks=physnet2
 >   ```
->      Of course, in this case, for `physnet2` to be interpreted consistently across the cluster, `eth2` on `netnode1` and `eth1` on `compnode2` should be in the same L2 segment.
+> Of course, in this case, for `physnet2` to be interpreted consistently across the cluster, `eth2` on `netnode1` and `eth1` on `compnode2` should be in the same L2 segment.
 >   
 > Other related sources:
 > * https://docs.redhat.com/en/documentation/red_hat_openstack_platform/10/html/networking_guide/bridge-mappings#maintaining_bridge_mappings
